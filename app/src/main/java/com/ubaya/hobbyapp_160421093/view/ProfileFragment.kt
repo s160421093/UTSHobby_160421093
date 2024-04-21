@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
@@ -19,6 +20,7 @@ import com.ubaya.hobbyapp_160421093.databinding.FragmentProfileBinding
 import com.ubaya.hobbyapp_160421093.model.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ubaya.hobbyapp_160421093.R
 import org.json.JSONObject
 
 class ProfileFragment : Fragment() {
@@ -48,10 +50,10 @@ class ProfileFragment : Fragment() {
             val user = Gson().fromJson<User>(res, sType)
 
             val dialog = AlertDialog.Builder(requireActivity())
-            dialog.setTitle("Konfirmasi")
+            dialog.setTitle("Confirmation")
 
             binding.btnChange.setOnClickListener {
-                dialog.setMessage("Apakah anda yakin ingin mengganti data diri anda?")
+                dialog.setMessage("Ganti data diri?")
                 dialog.setPositiveButton("Ganti", DialogInterface.OnClickListener { dialog, which ->
                     val newNamaDepan = binding.txtUbahNamaDepan.text.toString()
                     val newNamaBelakang = binding.txtUbahNamaBelakang.text.toString()
@@ -65,7 +67,7 @@ class ProfileFragment : Fragment() {
             }
 
             binding.btnLogout.setOnClickListener {
-                dialog.setMessage("Apakah anda yakin ingin melakukan logout?")
+                dialog.setMessage("Yakin ingin logout?")
                 dialog.setPositiveButton(
                     "Logout",
                     DialogInterface.OnClickListener { dialog, which ->
@@ -78,6 +80,32 @@ class ProfileFragment : Fragment() {
                     dialog.dismiss()
                 })
                 dialog.create().show()
+            }
+        }
+        // Set listener untuk BottomNavigationView
+        binding.bottomNav.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.itemHome -> {
+                    // Tidak perlu melakukan navigasi karena sudah berada di HomeFragment
+                    true
+                }
+                R.id.itemReadingHistory -> {
+                    // Navigate to ReadingHistoryFragment
+                    val action1 = HomeFragmentDirections.actionHomeFragmentToReadingHistoryFragment()
+                    val action2 = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+                    Navigation.findNavController(requireView()).navigate(action1)
+                    Navigation.findNavController(requireView()).navigate(action2)
+                    true
+                }
+                R.id.itemProfile -> {
+                    // Navigate to ProfileFragment
+                    val action1 = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+                    val action2 = HomeFragmentDirections.actionHomeFragmentToReadingHistoryFragment()
+                    Navigation.findNavController(requireView()).navigate(action1)
+                    Navigation.findNavController(requireView()).navigate(action2)
+                    true
+                }
+                else -> false
             }
         }
     }
@@ -93,7 +121,7 @@ class ProfileFragment : Fragment() {
         val newPasswordFinal = if (newPassword.isNotEmpty()) newPassword else user.password
 
         queue = Volley.newRequestQueue(requireContext())
-        val url = "http://10.0.2.2/project_uts_anmp/update_data.php"
+        val url = "https://ubaya.me/native/160421093/updateAccount.php"
 
         val alert = AlertDialog.Builder(requireActivity())
         alert.setTitle("Informasi")
@@ -102,15 +130,15 @@ class ProfileFragment : Fragment() {
             Request.Method.POST,
             url,
             { response ->
-                Log.d("cekbisa", response)
+                Log.d("cek", response)
                 val obj = JSONObject(response)
                 if (obj.getString("result") == "OK") {
-                    alert.setMessage("Berhasil melakukan update data user.")
+                    alert.setMessage("Berhasil update")
                     alert.setPositiveButton("OK") { dialog, which ->
                         dialog.dismiss()
                     }
                 } else {
-                    alert.setMessage("Gagal melakukan update data user.")
+                    alert.setMessage("Gagal update")
                     alert.setPositiveButton("OK") { dialog, which ->
                         dialog.dismiss()
                     }
@@ -118,7 +146,7 @@ class ProfileFragment : Fragment() {
                 alert.create().show()
             },
             { error ->
-                Log.e("cekerror", error.toString())
+                Log.e("errorUpdate", error.toString())
             }
         ) {
             override fun getParams(): MutableMap<String, String> {

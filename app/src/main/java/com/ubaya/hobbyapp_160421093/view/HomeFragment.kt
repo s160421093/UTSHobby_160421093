@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ubaya.hobbyapp_160421093.R
 import com.ubaya.hobbyapp_160421093.databinding.FragmentHomeBinding
 import com.ubaya.hobbyapp_160421093.model.Model
 import com.ubaya.hobbyapp_160421093.viewmodel.ModelViewModel
@@ -33,9 +35,9 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ModelViewModel::class.java)
         viewModel.refresh()
 
-        with (binding) {
-            binding.recView.layoutManager = LinearLayoutManager(context)
-            binding.recView.adapter = listDataAdapter
+        with(binding) {
+            recView.layoutManager = LinearLayoutManager(context)
+            recView.adapter = listDataAdapter
 
             refreshLayout.setOnRefreshListener {
                 recView.visibility = View.GONE
@@ -43,6 +45,29 @@ class HomeFragment : Fragment() {
                 progressLoad.visibility = View.VISIBLE
                 viewModel.refresh()
                 refreshLayout.isRefreshing = false
+            }
+
+            // Set listener untuk BottomNavigationView
+            bottomNav.setOnNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.itemHome -> {
+                        // Tidak perlu melakukan navigasi karena sudah berada di HomeFragment
+                        true
+                    }
+                    R.id.itemReadingHistory -> {
+                        // Navigate to ReadingHistoryFragment
+                        val action = HomeFragmentDirections.actionHomeFragmentToReadingHistoryFragment()
+                        Navigation.findNavController(requireView()).navigate(action)
+                        true
+                    }
+                    R.id.itemProfile -> {
+                        // Navigate to ProfileFragment
+                        val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+                        Navigation.findNavController(requireView()).navigate(action)
+                        true
+                    }
+                    else -> false
+                }
             }
         }
 
