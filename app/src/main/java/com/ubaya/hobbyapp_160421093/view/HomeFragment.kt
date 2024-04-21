@@ -1,6 +1,7 @@
 package com.ubaya.hobbyapp_160421093.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.ubaya.hobbyapp_160421093.model.Model
 import com.ubaya.hobbyapp_160421093.viewmodel.ModelViewModel
 
 class HomeFragment : Fragment() {
+    val TAG = "volleyModel"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: ModelViewModel
     private var listDataAdapter = HobbyAdapter(arrayListOf())
@@ -49,10 +51,12 @@ class HomeFragment : Fragment() {
 
     fun observeViewModel() {
         viewModel.modelLD.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "Data received from ViewModel: $it")
             listDataAdapter.updateHobby(it)
         })
 
         viewModel.modelLoadErrorLD.observe(viewLifecycleOwner, Observer {
+            Log.e(TAG, "Error loading data: $it")
             if (it == true) {
                 binding.txtError.visibility = View.VISIBLE
             } else {
@@ -61,6 +65,7 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.modelloadingLD.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "Loading status changed: $it")
             if (it == true) {
                 binding.recView.visibility = View.GONE
                 binding.progressLoad.visibility = View.VISIBLE

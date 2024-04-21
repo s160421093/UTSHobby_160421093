@@ -20,31 +20,29 @@ class ModelViewModel(application: Application): AndroidViewModel(application) {
 
     private var queue: RequestQueue?=null
 
-    fun refresh(){
-        modelloadingLD.value         = true
-        modelLoadErrorLD.value    = false
+    fun refresh() {
+        Log.d(TAG, "refresh() called")
+        modelloadingLD.value = true
+        modelLoadErrorLD.value = false
 
         val url = "http://10.0.2.2/film.json"
-        queue   = Volley.newRequestQueue(getApplication())
+        queue = Volley.newRequestQueue(getApplication())
 
         val stringRequest = StringRequest(
             Request.Method.GET,
             url,
-            {
-                Log.d("show_volley", it)
-
+            { response ->
+                Log.d(TAG, "Response received: $response")
                 val sType = object: TypeToken<List<Model>>() {}.type
-                val res = Gson().fromJson<List<Model>>(it, sType)
+                val res = Gson().fromJson<List<Model>>(response, sType)
                 modelloadingLD.value = false
                 modelLD.value = res as ArrayList<Model>
-
-                Log.d("data", res.toString())
-                Log.d("data", it)
+                Log.d(TAG, "Data loaded successfully")
             },
-            {
-                Log.d("showvolley", it.toString())
+            { error ->
+                Log.e(TAG, "Error loading data: $error")
                 modelloadingLD.value = false
-                modelLoadErrorLD.value = false
+                modelLoadErrorLD.value = true
             }
         )
         stringRequest.tag = TAG
