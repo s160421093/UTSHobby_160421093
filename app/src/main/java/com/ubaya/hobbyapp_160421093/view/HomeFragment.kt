@@ -56,14 +56,18 @@ class HomeFragment : Fragment() {
                     }
                     R.id.itemReadingHistory -> {
                         // Navigate to ReadingHistoryFragment
-                        val action = HomeFragmentDirections.actionHomeFragmentToReadingHistoryFragment()
-                        Navigation.findNavController(requireView()).navigate(action)
+                        val action1 = HomeFragmentDirections.actionHomeFragmentToReadingHistoryFragment()
+                        val action2 = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+                        Navigation.findNavController(requireView()).navigate(action1)
+                        Navigation.findNavController(requireView()).navigate(action2)
                         true
                     }
                     R.id.itemProfile -> {
                         // Navigate to ProfileFragment
-                        val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
-                        Navigation.findNavController(requireView()).navigate(action)
+                        val action1 = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+                        val action2 = HomeFragmentDirections.actionHomeFragmentToReadingHistoryFragment()
+                        Navigation.findNavController(requireView()).navigate(action1)
+                        Navigation.findNavController(requireView()).navigate(action2)
                         true
                     }
                     else -> false
