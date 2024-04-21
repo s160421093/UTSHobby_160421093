@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ubaya.hobbyapp_160421093.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_readingHistoryFragment"
+            app:destination="@id/readingHistoryFragment" />
+        <action
+            android:id="@+id/action_hobbyDetailFragment"
+            app:destination="@id/hobbyDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ubaya.hobbyapp_160421093.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_readingHistoryFragment"
+            app:destination="@id/readingHistoryFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/readingHistoryFragment"
+        android:name="com.ubaya.hobbyapp_160421093.view.ReadingHistoryFragment"
+        android:label="fragment_reading_history"
+        tools:layout="@layout/fragment_reading_history" >
+        <action
+            android:id="@+id/action_readingHistoryFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_readingHistoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyDetailFragment"
+        android:name="com.ubaya.hobbyapp_160421093.view.HobbyDetailFragment"
+        android:label="fragment_hobby_detail"
+        tools:layout="@layout/fragment_hobby_detail" >
+        <action
+            android:id="@+id/action_hobbyDetailFragment2_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="direction"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="fullDescription"
+            app:argType="string" />
+        <argument
+            android:name="images"
+            app:argType="string" />
+    </fragment>
+</navigation>
