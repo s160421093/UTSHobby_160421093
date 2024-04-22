@@ -19,12 +19,25 @@ class Signup : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnSignUp2.setOnClickListener {
-            if(binding.txtPassword.text.toString() == binding.txtUlang.text.toString()) {
-                registerUser()
+            val username = binding.txtUsernameSU.text.toString()
+            val namaDepan = binding.txtNamaDepan.text.toString()
+            val namaBelakang = binding.txtNamaBelakang.text.toString()
+            val email = binding.txtEmail.text.toString()
+            val password = binding.txtPassword.text.toString()
+            val ulangPassword = binding.txtUlang.text.toString()
+
+            // Memeriksa apakah semua TextInput terisi
+            if (username.isEmpty() || namaDepan.isEmpty() || namaBelakang.isEmpty() ||
+                email.isEmpty() || password.isEmpty() || ulangPassword.isEmpty()) {
+                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
+            } else {
+                // Memeriksa apakah kedua password cocok
+                if (password == ulangPassword) {
+                    registerUser()
+                } else {
+                    Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show()
+                }
             }
-            else {
-            Toast.makeText(this,"Password does not match", Toast.LENGTH_SHORT).show()
-        }
         }
 
         binding.btnSignIn3.setOnClickListener {

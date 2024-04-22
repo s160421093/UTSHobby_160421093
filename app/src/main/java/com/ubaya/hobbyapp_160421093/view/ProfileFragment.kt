@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
                     "Logout",
                     DialogInterface.OnClickListener { dialog, which ->
                         sharedPref.edit().clear().apply()
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        val intent = Intent(requireActivity(), Signin::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     })
